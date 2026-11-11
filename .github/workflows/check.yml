@@ -1,0 +1,70 @@
+name: Check OVH VPS availability
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      test_notification:
+        description: "Envoyer uniquement une notification de test"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-vps
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check availability
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          INCLUDE_EUROPE: ${{ vars.INCLUDE_EUROPE || 'false' }}
+          TEST_NOTIFICATION: ${{ github.event_name == 'workflow_dispatch' && inputs.test_notification && 'true' || 'false' }}
+        run: python check_vps.py
+
+      - name: Configure git identity
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit state.json if changed
+        run: |
+          git add state.json
+          if git diff --cached --quiet -- state.json; then
+            echo "state.json inchangé, rien à commiter."
+            exit 0
+          fi
+          git commit -m "update state"
+          git pull --rebase
+          git push
+
+      - name: Keepalive (évite la désactivation du cron après 60 jours)
+        if: always()
+        run: |
+          last=$(git log -1 --format=%ct)
+          now=$(date +%s)
+          age_days=$(( (now - last) / 86400 ))
+          echo "Dernier commit il y a ${age_days} jour(s)."
+          if [ "$age_days" -gt 50 ]; then
+            git commit --allow-empty -m "keepalive"
+            git pull --rebase
+            git push
+          else
+            echo "Pas de keepalive nécessaire."
+          fi
