@@ -1,17 +1,17 @@
 {
-  "changed_at": "2026-11-14T14:54:35+00:00",
+  "changed_at": "2026-11-14T19:37:52+00:00",
   "availability": {
     "vps-2027-model1|DE": false,
     "vps-2027-model1|EU-SOUTH-MIL": false,
     "vps-2027-model1|EU-WEST-RBX": false,
-    "vps-2027-model1|GRA": false,
+    "vps-2027-model1|GRA": true,
     "vps-2027-model1|SBG": false,
     "vps-2027-model1|UK": false,
     "vps-2027-model1|WAW": false,
     "vps-2027-model2|DE": false,
     "vps-2027-model2|EU-SOUTH-MIL": false,
     "vps-2027-model2|EU-WEST-RBX": false,
-    "vps-2027-model2|GRA": true,
+    "vps-2027-model2|GRA": false,
     "vps-2027-model2|SBG": false,
     "vps-2027-model2|UK": false,
     "vps-2027-model2|WAW": false
