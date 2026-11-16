@@ -1,11 +1,11 @@
 {
-  "changed_at": "2026-11-16T07:58:02+00:00",
+  "changed_at": "2026-11-16T18:02:10+00:00",
   "availability": {
     "vps-2027-model1|DE": false,
     "vps-2027-model1|EU-SOUTH-MIL": false,
     "vps-2027-model1|EU-WEST-RBX": false,
-    "vps-2027-model1|GRA": true,
-    "vps-2027-model1|SBG": false,
+    "vps-2027-model1|GRA": false,
+    "vps-2027-model1|SBG": true,
     "vps-2027-model1|UK": false,
     "vps-2027-model1|WAW": false,
     "vps-2027-model2|DE": false,
